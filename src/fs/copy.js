@@ -1,6 +1,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as url from "url";
+import checkFile from "../utils/checkFile.js";
 
 const NEW_FOLDER_NAME = "files_copy";
 const OLD_FOLDER_NAME = "files";
@@ -12,14 +13,8 @@ const copy = async () => {
   const pathForNewFolder = path.join(dirname, NEW_FOLDER_NAME);
   const pathForOldFolder = path.join(dirname, OLD_FOLDER_NAME);
   if (
-    (await fs.access(pathForNewFolder, fs.constants.F_OK).then(
-      () => true,
-      () => false
-    )) ||
-    !(await fs.access(pathForOldFolder, fs.constants.F_OK).then(
-      () => true,
-      () => false
-    ))
+    (await checkFile(pathForNewFolder)) ||
+    !(await checkFile(pathForOldFolder))
   ) {
     throw Error(TEXT_ERROR);
   } else {

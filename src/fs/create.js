@@ -1,6 +1,7 @@
 import * as fs from "fs/promises";
 import * as path from "path";
 import * as url from "url";
+import checkFile from "../utils/checkFile.js";
 
 const NAME_NEW_FILE = "fresh.txt";
 const TEXT_IN_FILE = "I am fresh and young";
@@ -9,12 +10,7 @@ const dirname = url.fileURLToPath(new URL(".", import.meta.url));
 
 const create = async () => {
   const pathForNewFile = path.join(dirname, "files", NAME_NEW_FILE);
-  if (
-    await fs.access(pathForNewFile, fs.constants.F_OK).then(
-      () => true,
-      () => false
-    )
-  ) {
+  if (await checkFile(pathForNewFile)) {
     throw Error(TEXT_ERROR);
   } else {
     await fs.writeFile(pathForNewFile, TEXT_IN_FILE, "utf-8");
